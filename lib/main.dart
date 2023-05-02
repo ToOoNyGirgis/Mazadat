@@ -28,17 +28,17 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          RegisterScreen.id: (context) => RegisterScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
-          HomeScreen.id: (context) => HomeScreen(),
-          CategoryScreen.id: (context) => CategoryScreen(),
+          RegisterScreen.id: (context) => const RegisterScreen(),
+          LoginScreen.id: (context) => const LoginScreen(),
+          HomeScreen.id: (context) => const HomeScreen(),
+          CategoryScreen.id: (context) => const CategoryScreen(),
         },
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         title: 'Flutter Demo',
-
         theme: ThemeData(
+          fontFamily: "Tajawal",
           primarySwatch: Colors.blue,
         ),
         initialRoute: HomeScreen.id,
