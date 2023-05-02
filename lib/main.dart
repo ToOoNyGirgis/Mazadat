@@ -4,6 +4,7 @@ import 'package:news_app/screens/auth/login_screen.dart';
 import 'package:news_app/screens/auth/register_screen.dart';
 import 'package:news_app/screens/category/category_screen.dart';
 import 'package:news_app/screens/home/home_screen.dart';
+import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.id: (context) => const LoginScreen(),
           HomeScreen.id: (context) => const HomeScreen(),
           CategoryScreen.id: (context) => const CategoryScreen(),
+          ViewScreen.id: (context) => const ViewScreen(),
         },
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
