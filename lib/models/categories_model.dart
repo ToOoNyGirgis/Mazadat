@@ -8,4 +8,12 @@ class CategoriesModel {
     required this.name,
     required this.image,
   });
+
+  factory CategoriesModel.fromJson(jsonData) {
+    return CategoriesModel(
+      id: jsonData['id'],
+      name: jsonData['name'],
+      image: jsonData['image'],
+    );
+  }
 }

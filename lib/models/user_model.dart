@@ -12,4 +12,14 @@ class UserModel {
     required this.mobile,
     required this.image,
   });
+
+  factory UserModel.fromJson(jsonData) {
+    return UserModel(
+      id: jsonData['id'],
+      name: jsonData['name'],
+      image: jsonData['image'],
+      last_name: jsonData['last_name'],
+      mobile: jsonData['mobile'],
+    );
+  }
 }
