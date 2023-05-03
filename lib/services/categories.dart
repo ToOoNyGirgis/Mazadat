@@ -35,11 +35,11 @@ class CategoriesService {
 
       return list;
     } on SocketException {
-      print('No Internet connection 😑');
+      throw Exception('No Internet connection 😑');
     } on HttpException {
-      print("Couldn't find the post 😱");
+      throw Exception("Couldn't find the post 😱");
     } on FormatException {
-      print("Bad response format 👎");
+      throw Exception("Bad response format 👎");
     }
   }
 }
