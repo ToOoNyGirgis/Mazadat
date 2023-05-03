@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -20,17 +21,25 @@ class CategoriesService {
   }
 
   Future<List<CategoriesModel>> getCategories(BuildContext context) async {
-    http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
-        headers: await get_headers(context));
+    try {
+      http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
+          headers: await get_headers(context));
 
-    if (response.statusCode != 200) {
-      var data = jsonDecode(response.body);
-      throw Exception(data['error']['message']);
+      if (response.statusCode != 200) {
+        var data = jsonDecode(response.body);
+        throw Exception(data['error']['message']);
+      }
+      final items = json.decode(response.body)['data'] as List?;
+      List<CategoriesModel> list =
+          items!.map((val) => CategoriesModel.fromJson(val)).toList();
+
+      return list;
+    } on SocketException {
+      print('No Internet connection 😑');
+    } on HttpException {
+      print("Couldn't find the post 😱");
+    } on FormatException {
+      print("Bad response format 👎");
     }
-    final items = json.decode(response.body)['data'] as List?;
-    List<CategoriesModel> list =
-        items!.map((val) => CategoriesModel.fromJson(val)).toList();
-
-    return list;
   }
 }
