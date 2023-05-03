@@ -5,7 +5,9 @@ class ItemsModel {
   final String time;
   final String mobile;
   final String city;
+  final int cityId;
   final String category;
+  final int categoryId;
   final String subCategory;
   final String image;
   final List<String> images;
@@ -17,7 +19,9 @@ class ItemsModel {
     required this.time,
     required this.mobile,
     required this.city,
+    required this.cityId,
     required this.category,
+    required this.categoryId,
     required this.subCategory,
     required this.image,
     required this.images,
@@ -35,6 +39,8 @@ class ItemsModel {
       subCategory: jsonData['subCategory'],
       time: jsonData['time'],
       images: jsonData['images'],
+      cityId: jsonData['cityId'],
+      categoryId: jsonData['categoryId'],
     );
   }
 }
