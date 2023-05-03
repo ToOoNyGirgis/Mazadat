@@ -20,7 +20,7 @@ class ItemService {
     };
   }
 
-  Future<List<ItemsModel>> getCategories(BuildContext context,String itemId) async {
+  Future<List<ItemsModel>> getItem(BuildContext context,String itemId) async {
     try {
       http.Response response = await http.get(Uri.parse(_kApiUrl + itemId),
           headers: await get_headers(context));

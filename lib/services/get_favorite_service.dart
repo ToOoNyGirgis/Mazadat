@@ -19,7 +19,7 @@ class FavoriteService {
     };
   }
 
-  Future<List<dynamic>> getCategories(BuildContext context) async {
+  Future<List<ItemsModel>> getFavorites(BuildContext context) async {
     try {
       http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
           headers: await get_headers(context));

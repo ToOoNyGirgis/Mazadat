@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
-
   Future<dynamic> get({
     required String url,
     @required String? token,
+
   }) async {
     Map<String, String> headers = {};
     if (token != null) {
@@ -68,5 +68,4 @@ class Api {
           'there\'s an error in status code = ${response.statusCode} \n and the body is : \n ${jsonDecode(response.body)}');
     }
   }
-
 }
