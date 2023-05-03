@@ -10,7 +10,7 @@ import '/models/categories_model.dart';
 
 class ItemService {
   late Map<String, String> requestHeaders;
-  static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/categories/categoryId/';
+  static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/items/';
 
   get_headers(BuildContext context) async {
     return requestHeaders = {

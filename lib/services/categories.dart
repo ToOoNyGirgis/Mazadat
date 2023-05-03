@@ -42,4 +42,51 @@ class CategoriesService {
       throw Exception("Bad response format 👎");
     }
   }
+
+  Future<List<CategoriesModel>> getMain(BuildContext context) async {
+    try {
+      http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
+          headers: await get_headers(context));
+
+      if (response.statusCode != 200) {
+        var data = jsonDecode(response.body);
+        throw Exception(data['error']['message']);
+      }
+      final items = json.decode(response.body)['data'] as List?;
+      List<CategoriesModel> list =
+          items!.map((val) => CategoriesModel.fromJson(val)).toList();
+
+      return list;
+    } on SocketException {
+      throw Exception('No Internet connection 😑');
+    } on HttpException {
+      throw Exception("Couldn't find the post 😱");
+    } on FormatException {
+      throw Exception("Bad response format 👎");
+    }
+  }
+  Future<List<CategoriesModel>> getSub(BuildContext context) async {
+    try {
+      http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
+          headers: await get_headers(context));
+
+      if (response.statusCode != 200) {
+        var data = jsonDecode(response.body);
+        throw Exception(data['error']['message']);
+      }
+      final items = json.decode(response.body)['data'] as List?;
+      List<CategoriesModel> list =
+          items!.map((val) => CategoriesModel.fromJson(val)).toList();
+
+      return list;
+    } on SocketException {
+      throw Exception('No Internet connection 😑');
+    } on HttpException {
+      throw Exception("Couldn't find the post 😱");
+    } on FormatException {
+      throw Exception("Bad response format 👎");
+    }
+  }
+
+
 }
