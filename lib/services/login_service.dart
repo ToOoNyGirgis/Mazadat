@@ -1,6 +1,6 @@
 import 'package:news_app/helper/api.dart';
 
-class RegisterService{
+class RegisterService {
   static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/login/';
 
   Future<Map<String, dynamic>> postRegister({
@@ -18,5 +18,4 @@ class RegisterService{
       throw Exception('Registration failed: $e');
     }
   }
-
 }
