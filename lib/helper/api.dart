@@ -25,8 +25,9 @@ class Api {
   Future<dynamic> post(
       {required String url,
       @required dynamic body,
+      @required dynamic headers,
       @required String? token}) async {
-    Map<String, String> headers = {};
+
     if (token != null) {
       headers.addAll({'Authorization': "Bearer $token"});
     }
@@ -37,8 +38,7 @@ class Api {
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      return data;
+      return jsonDecode(response.body);
     } else {
       throw Exception(
           'there\'s an error in status code = ${response.statusCode} \n and the body is : \n ${jsonDecode(response.body)}');

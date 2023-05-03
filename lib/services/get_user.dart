@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:news_app/helper/api.dart';
 import 'package:news_app/models/items_model.dart';
 import 'package:news_app/models/user_model.dart';
 
@@ -20,7 +21,7 @@ class GetUserService {
     };
   }
 
-  Future<List<UserModel>> getUser(BuildContext context,String userId) async {
+  Future<List<UserModel>> getUser(BuildContext context, String userId) async {
     try {
       http.Response response = await http.get(Uri.parse(_kApiUrl + userId),
           headers: await get_headers(context));
@@ -31,7 +32,7 @@ class GetUserService {
       }
       final items = json.decode(response.body)['data'] as List?;
       List<UserModel> list =
-      items!.map((val) => UserModel.fromJson(val)).toList();
+          items!.map((val) => UserModel.fromJson(val)).toList();
 
       return list;
     } on SocketException {
@@ -40,6 +41,37 @@ class GetUserService {
       throw Exception("Couldn't find the post 😱");
     } on FormatException {
       throw Exception("Bad response format 👎");
+    }
+  }
+
+  Future<bool> login(BuildContext context, data) async {
+    final api = Api();
+      final response = await api.post(
+        url: '${_kApiUrl}login/',
+        headers: await get_headers(context),
+        body: json.encode(data),
+      );
+      if (response['status'] == true) {
+        // store token in sharedPreference
+        return true;
+      } else {
+        // show the response['message']
+        return false;
+      }
+  }
+  Future<bool> register(BuildContext context, data) async {
+    final api = Api();
+    final response = await api.post(
+      url: '${_kApiUrl}register/',
+      headers: await get_headers(context),
+      body: json.encode(data),
+    );
+    if (response['status'] == true) {
+      // store token in sharedPreference
+      return true;
+    } else {
+      // show the response['message']
+      return false;
     }
   }
 }
