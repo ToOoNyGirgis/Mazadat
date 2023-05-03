@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/auth/login_screen.dart';
-import 'package:news_app/screens/auth/register_screen.dart';
 import 'package:news_app/screens/auth/widgets/login_body.dart';
 import 'package:news_app/screens/auth/widgets/register_body.dart';
 import 'package:news_app/widgets/custom_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/auth/login_screen.dart';
-import 'package:news_app/screens/category/category_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
 import 'package:news_app/widgets/custom_button.dart';
 import 'package:news_app/widgets/custom_text_field.dart';
 import 'package:sizer/sizer.dart';
@@ -58,7 +58,7 @@ class RegisterBody extends StatelessWidget {
             CustomButton(
               text: 'تسجيل',
               onTap: () {
-                Navigator.pushNamed(context, CategoryScreen.id);
+                Navigator.pushNamed(context, BottomNavBarScreen.id);
               },
             ),
             SizedBox(
