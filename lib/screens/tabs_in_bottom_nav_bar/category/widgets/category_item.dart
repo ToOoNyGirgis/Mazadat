@@ -1,28 +1,55 @@
-
 import 'package:flutter/material.dart';
+import 'package:news_app/models/categories_model.dart';
 import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    super.key,  required this.index,
-  });
-  final int index;
+  CategoryItem({Key? key, required this.categories}) : super(key: key);
+  CategoriesModel categories;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 1.h, vertical: 1.h),
-      child: ListTile(
-        onTap: (){
-          Navigator.pushNamed(context, ViewScreen.id);
-        },
-        title: Center(
-          child: Text("${index+1}"),
-        ),
-        tileColor: Colors.amber,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, ViewScreen.id,
+            arguments: categories);
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            child: Card(
+              elevation: 15,
+              child: Padding(
+                padding:   EdgeInsets.symmetric(horizontal: 4.w,vertical:1.h ,),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        categories.name,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    Row()
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: -40,
+            child: Image.network(
+              categories.image,
+              height: 100,
+              width: 100,
+            ),
+          )
+        ],
       ),
     );
   }

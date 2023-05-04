@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:http/http.dart' as http;
-import '/models/categories_model.dart';
+import 'package:news_app/models/categories_model.dart';
 
 class CategoriesService {
   late Map<String, String> requestHeaders;
@@ -23,7 +23,7 @@ class CategoriesService {
   Future<List<CategoriesModel>> getCategories(BuildContext context) async {
     try {
       http.Response response = await http.get(Uri.parse(_kApiUrl + 'getAll'),
-          headers: await get_headers(context));
+         /* headers: await get_headers(context)*/);
 
       if (response.statusCode != 200) {
         var data = jsonDecode(response.body);
@@ -32,7 +32,6 @@ class CategoriesService {
       final items = json.decode(response.body)['data'] as List?;
       List<CategoriesModel> list =
           items!.map((val) => CategoriesModel.fromJson(val)).toList();
-
       return list;
     } on SocketException {
       throw Exception('No Internet connection 😑');

@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
         routes: {
           HomeScreen.id: (context) => const HomeScreen(),
           BottomNavBarScreen.id: (context) => const BottomNavBarScreen(),
-          CategoryScreen.id: (context) => const CategoryScreen(),
-          ViewScreen.id: (context) => const ViewScreen(),
+          CategoryScreen.id: (context) =>  CategoryScreen(),
+          ViewScreen.id: (context) =>  ViewScreen(),
         },
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
