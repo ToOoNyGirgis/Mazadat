@@ -41,12 +41,12 @@ class CategoryItem extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 16,
-            top: -40,
+            right: 40,
+            top: -30,
             child: Image.network(
               categories.image,
-              height: 100,
-              width: 100,
+              height: 120,
+              width: 120,
             ),
           )
         ],

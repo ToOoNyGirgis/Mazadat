@@ -4,8 +4,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:news_app/cubits/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/favorites/favorites_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/more/more_screen.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/ratings/rating_screen.dart';
 import 'package:sizer/sizer.dart';
 
 
@@ -16,14 +16,14 @@ class BottomNavBarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BottomNavBarCubit(),
+      create: (context) => BottomNavBarCubit(),
       child: Scaffold(
         body: BlocBuilder<BottomNavBarCubit, int>(
           builder: (context, state) {
             const List<Widget> tabs = [
-              CategoryScreen(),
+              HomeScreen(),
               FavoritesScreen(),
-              RatingScreen(),
+              CategoryScreen(),
               MoreScreen(),
             ];
             return tabs[state];
@@ -48,7 +48,7 @@ class BottomNavBarScreen extends StatelessWidget {
                       text: 'المفضلة',
                     ),
                     GButton(
-                      icon: Icons.generating_tokens,
+                      icon: Icons.category,
                       text: 'تصنيفات',
                     ),
                     GButton(

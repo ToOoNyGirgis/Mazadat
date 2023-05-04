@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/auth/widgets/login_body.dart';
 import 'package:news_app/screens/auth/widgets/register_body.dart';
-import 'package:news_app/widgets/custom_button.dart';
-import 'package:sizer/sizer.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-  static String id = 'home';
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({Key? key}) : super(key: key);
+  static String id = 'auth';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +15,7 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(
             title: const Text('مزادات'),
             centerTitle: true,
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(
                   child: Text(
@@ -27,7 +25,6 @@ class HomeScreen extends StatelessWidget {
                 Tab(
                   child: Text(
                     'التسجيل كمستخدم جديد',
-
                   ),
                 ),
               ],
