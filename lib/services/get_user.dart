@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/helper/api.dart';
-import 'package:news_app/models/items_model.dart';
 import 'package:news_app/models/user_model.dart';
 
 class GetUserService {
@@ -46,6 +45,7 @@ class GetUserService {
 
   Future<bool> login(BuildContext context, data) async {
     final api = Api();
+    try {
       final response = await api.post(
         url: '${_kApiUrl}login/',
         headers: await get_headers(context),
@@ -58,7 +58,15 @@ class GetUserService {
         // show the response['message']
         return false;
       }
+    } on SocketException {
+      throw Exception('No Internet connection 😑');
+    } on HttpException {
+      throw Exception("Couldn't find the post 😱");
+    } on FormatException {
+      throw Exception("Bad response format 👎");
+    }
   }
+
   Future<bool> register(BuildContext context, data) async {
     final api = Api();
     final response = await api.post(

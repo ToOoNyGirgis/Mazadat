@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
+import 'package:news_app/services/get_user.dart';
 import 'package:news_app/widgets/custom_button.dart';
 import 'package:news_app/widgets/custom_text_field.dart';
 import 'package:sizer/sizer.dart';
 
-class LoginBody extends StatelessWidget {
+class LoginBody extends StatefulWidget {
   const LoginBody({
     super.key,
   });
+
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
+
+class _LoginBodyState extends State<LoginBody> {
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  String errorString = "";
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +26,8 @@ class LoginBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-          const CustomTextField(
+          CustomTextField(
+            controller: _mobileController,
             keyboardType: TextInputType.phone,
             icon: Icons.phone,
             hint: 'ادخل رقم الهاتف',
@@ -26,19 +35,22 @@ class LoginBody extends StatelessWidget {
           SizedBox(
             height: 1.5.h,
           ),
-          const CustomTextField(
+          CustomTextField(
+            controller: _passwordController,
             obscureText: true,
             icon: Icons.password,
             hint: 'ادخل الرقم السري',
           ),
-
           SizedBox(
             height: 3.h,
           ),
           CustomButton(
             text: 'تسجيل الدخول',
-            onTap: (){
-              Navigator.pushNamed(context, BottomNavBarScreen.id);
+            onTap: () {
+              GetUserService().login(context, {
+                'mobile': _mobileController,
+                'password': _passwordController,
+              });
             },
           ),
           SizedBox(

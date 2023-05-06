@@ -47,7 +47,7 @@ class ItemService {
     try {
       http.Response response = await http.get(
         Uri.parse("${_kApiUrl}categoryItems/$subId"),
-        headers: await get_headers(context),
+        // headers: await get_headers(context),
       );
 
       if (response.statusCode != 200) {

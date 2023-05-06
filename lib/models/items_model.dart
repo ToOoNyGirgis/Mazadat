@@ -6,10 +6,10 @@ class ItemsModel {
   final String time;
   final String mobile;
   // final String city;
-  final int cityId;
+  final String cityId;
   final String category;
-  final int categoryId;
-  final int subId;
+  final String categoryId;
+  final String subId;
   final String subCategory;
   final String image;
   // final List<String> images;
@@ -40,12 +40,12 @@ class ItemsModel {
       date: jsonData['date'],
       // city: jsonData['city'],
       mobile: jsonData['mobile'],
-      subCategory: jsonData['subCategory'],
+      subCategory: jsonData['sub_category'],
       time: jsonData['time'],
       // images: jsonData['images'],
-      cityId: jsonData['cityId'],
-      categoryId: jsonData['categoryId'],
-      subId: jsonData['subId'],
+      cityId: jsonData['city_id'],
+      categoryId: jsonData['category_id'],
+      subId: jsonData['sub_id'],
       desc: jsonData['desc'],
     );
   }

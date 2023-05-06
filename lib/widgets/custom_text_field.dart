@@ -10,8 +10,10 @@ class CustomTextField extends StatelessWidget {
     this.icon,
     this.keyboardType,
     this.obscureText = false,
+    this.controller,
   }) : super(key: key);
   final String hint;
+  final TextEditingController? controller;
   final void Function(String?)? onSaved;
   final int maxLines;
   final Function(String)? onChanged;
@@ -21,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onSaved: onSaved,
       obscureText: obscureText,
       keyboardType: keyboardType,
