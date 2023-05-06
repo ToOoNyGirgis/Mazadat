@@ -20,7 +20,7 @@ class CategoriesService {
     };
   }
 
-  Future<List<CategoriesModel>> getCategories(BuildContext context) async {
+  Future<List<CategoriesModel>> getCategories() async {
     try {
       http.Response response = await http.get(
         Uri.parse('${_kApiUrl}getAll'), /* headers: await get_headers(context)*/

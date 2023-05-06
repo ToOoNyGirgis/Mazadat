@@ -42,8 +42,7 @@ class ItemService {
     }
   }
 
-  Future<List<ItemsModel>> getAllCategoryItems(
-      BuildContext context, int subId) async {
+  Future<List<ItemsModel>> getAllCategoryItems(int subId) async {
     try {
       http.Response response = await http.get(
         Uri.parse("${_kApiUrl}categoryItems/$subId"),

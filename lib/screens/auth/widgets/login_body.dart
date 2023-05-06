@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/services/get_user.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:news_app/widgets/custom_button.dart';
 import 'package:news_app/widgets/custom_text_field.dart';
 import 'package:sizer/sizer.dart';
@@ -47,10 +47,11 @@ class _LoginBodyState extends State<LoginBody> {
           CustomButton(
             text: 'تسجيل الدخول',
             onTap: () {
-              GetUserService().login(context, {
-                'mobile': _mobileController,
-                'password': _passwordController,
-              });
+              // GetUserService().login(context, {
+              //   'mobile': _mobileController,
+              //   'password': _passwordController,
+              // });
+              Navigator.pushNamed(context, BottomNavBarScreen.id);
             },
           ),
           SizedBox(

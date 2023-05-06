@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/models/categories_model.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/widgets/category_item.dart';
 import 'package:news_app/services/categories.dart';
-import 'package:news_app/models/categories_model.dart';
 
-
-class CategoryScreen extends StatelessWidget{
+class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
   static String id = 'category';
 
@@ -18,7 +17,6 @@ class CategoryScreen extends StatelessWidget{
         ),
         body: CategoryBody());
   }
-
 }
 
 class CategoryBody extends StatelessWidget {
@@ -29,14 +27,14 @@ class CategoryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30,left: 8,right: 8),
+      padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
       child: FutureBuilder<List<CategoriesModel>>(
-        future: CategoriesService().getCategories(context),
+        future: CategoriesService().getCategories(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<CategoriesModel> categories = snapshot.data!;
             return GridView.builder(
-              physics: BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 itemCount: categories.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -45,11 +43,11 @@ class CategoryBody extends StatelessWidget {
                   mainAxisSpacing: 30,
                 ),
                 itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: CategoryItem(
-                        categories:categories[index] ,
+                      padding: EdgeInsets.only(top: 20),
+                      child: CategoryItem(
+                        categories: categories[index],
                       ),
-                ));
+                    ));
           } else if (snapshot.hasError) {
             const Text('Sorry there is an error');
           }
