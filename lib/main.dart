@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/helper/is_loged_in.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          AuthScreen.id: (context) => const AuthScreen(),
+          AuthScreen.id: (context) => IsLoggedIn(),
           HomeScreen.id: (context) => const HomeScreen(),
           BottomNavBarScreen.id: (context) => const BottomNavBarScreen(),
           CategoryScreen.id: (context) => const CategoryScreen(),

@@ -4,8 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/common/constant.dart';
 import 'package:news_app/helper/api.dart';
 import 'package:news_app/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetUserService {
   late Map<String, String> requestHeaders;
@@ -51,6 +53,8 @@ class GetUserService {
       );
       if (response['status'] == true) {
         // store token in sharedPreference
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString(kAccessTokenInPref, response['data']);
         return true;
       } else {
         // show the response['message']
@@ -74,6 +78,8 @@ class GetUserService {
     );
     if (response['status'] == true) {
       // store token in sharedPreference
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString(kAccessTokenInPref, response['data']);
       return true;
     } else {
       // show the response['message']

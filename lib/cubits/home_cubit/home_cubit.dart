@@ -13,16 +13,16 @@ class HomeCubit extends Cubit<HomeState> {
   final CategoriesService _categoriesService;
   final ItemService _itemService;
   late TabController _tabController;
-  late List<CategoriesModel> _categories;
+  late List<CategoriesModel> categories;
   bool? _internet;
 
   Future<void> loadHomeData() async {
     emit(HomeLoading());
     try {
       await checkInternet();
-      _categories = await _categoriesService.getCategories();
+      categories = await _categoriesService.getCategories();
       List<ItemsModel> items = await _itemService.getAllCategoryItems(101);
-      emit(HomeSuccess(items: items, category: _categories));
+      emit(HomeSuccess(items: items, category: categories));
     } catch (error) {
       if (_internet == false) {
         emit(HomeNoInternet());
