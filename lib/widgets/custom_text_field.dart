@@ -11,8 +11,10 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.obscureText = false,
     this.controller,
+    this.validator,
   }) : super(key: key);
   final String hint;
+  final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String?)? onSaved;
   final int maxLines;
@@ -28,12 +30,13 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
-      validator: (value) {
-        if (value?.isEmpty ?? true) {
-          return 'Field is required';
-        }
-        return null;
-      },
+      validator: validator ??
+          (value) {
+            if (value?.isEmpty ?? true) {
+              return 'هذه الخانة مطلوبة';
+            }
+            return null;
+          },
       maxLines: maxLines,
       decoration: InputDecoration(
         prefixIcon: icon != null ? Icon(icon) : null,

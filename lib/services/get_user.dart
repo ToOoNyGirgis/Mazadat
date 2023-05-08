@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/helper/api.dart';
@@ -12,10 +11,9 @@ class GetUserService {
   late Map<String, String> requestHeaders;
   static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/users/';
 
-  get_headers(BuildContext context) async {
+  get_headers() async {
     return requestHeaders = {
       'Content-type': 'application/json',
-      'lang': context.locale.toString(),
       'token': "token"
     };
   }
@@ -23,7 +21,7 @@ class GetUserService {
   Future<List<UserModel>> getUser(BuildContext context, String userId) async {
     try {
       http.Response response = await http.get(Uri.parse(_kApiUrl + userId),
-          headers: await get_headers(context));
+          headers: await get_headers());
 
       if (response.statusCode != 200) {
         var data = jsonDecode(response.body);
@@ -43,12 +41,12 @@ class GetUserService {
     }
   }
 
-  Future<bool> login(BuildContext context, data) async {
+  Future<bool> login(data) async {
     final api = Api();
     try {
       final response = await api.post(
         url: '${_kApiUrl}login',
-        headers: await get_headers(context),
+        headers: await get_headers(),
         body: json.encode(data),
       );
       if (response['status'] == true) {
@@ -67,11 +65,11 @@ class GetUserService {
     }
   }
 
-  Future<bool> register(BuildContext context, data) async {
+  Future<bool> register(data) async {
     final api = Api();
     final response = await api.post(
       url: '${_kApiUrl}register',
-      headers: await get_headers(context),
+      headers: await get_headers(),
       body: json.encode(data),
     );
     if (response['status'] == true) {

@@ -3,11 +3,11 @@ class UserModel {
   final String name;
   final String lastName;
   final String mobile;
-  final String password;
+  // final String password;
   final String image;
 
   UserModel({
-    required this.password,
+    // required this.password,
     required this.id,
     required this.name,
     required this.lastName,
@@ -22,7 +22,7 @@ class UserModel {
       image: jsonData['image'],
       lastName: jsonData['last_name'],
       mobile: jsonData['mobile'],
-      password: jsonData['password'],
+      // password: jsonData['password'],
     );
   }
 }
