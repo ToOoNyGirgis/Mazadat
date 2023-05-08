@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/models/categories_model.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/widgets/category_item.dart';
-import 'package:news_app/services/categories.dart';
+import 'package:news_app/models/cities_model.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/widgets/category_body.dart';
+import 'package:news_app/services/cities.dart';
+import 'package:sizer/sizer.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -10,50 +11,128 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('الصفحة الرئيسية'),
-          centerTitle: true,
-        ),
-        body: CategoryBody());
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('الصفحة الرئيسية'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.white,
+                context: context,
+                builder: (context) => const FilterBottomSheet(),
+              );
+            },
+            icon: const Icon(Icons.filter_list_alt),
+          ),
+        ],
+      ),
+      body: const CategoryBody(),
+    );
   }
 }
 
-class CategoryBody extends StatelessWidget {
-  const CategoryBody({
-    super.key,
-  });
+class FilterBottomSheet extends StatelessWidget {
+  const FilterBottomSheet({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
-      child: FutureBuilder<List<CategoriesModel>>(
-        future: CategoriesService().getCategories(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<CategoriesModel> categories = snapshot.data!;
-            return GridView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: categories.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.3,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 30,
-                ),
-                itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: CategoryItem(
-                        categories: categories[index],
+    return FutureBuilder<List<CitiesModel>>(
+      future: CityService().getCity(context),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final cities = snapshot.data!;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Container(
+                      height: 0.5.h,
+                      width: 8.w,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ));
-          } else if (snapshot.hasError) {
-            const Text('Sorry there is an error');
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          splashColor: Colors.transparent,
+                          splashRadius: 22,
+                          iconSize: 18.sp,
+                          // padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(maxWidth: 40),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.close_outlined,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        Text(
+                          'المدينة',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 3.h),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: ListView.builder(
+                    itemCount: cities.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.only(bottom: 2.h),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey),
+                        ),
+                        onTap: () {},
+                        title: Padding(
+                          padding: EdgeInsets.all(8.sp),
+                          child: Text(cities[index].name),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Error: ${snapshot.error}',
+              style: TextStyle(color: Colors.red),
+            ),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }
