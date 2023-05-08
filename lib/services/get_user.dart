@@ -47,7 +47,7 @@ class GetUserService {
     final api = Api();
     try {
       final response = await api.post(
-        url: '${_kApiUrl}login/',
+        url: '${_kApiUrl}login',
         headers: await get_headers(context),
         body: json.encode(data),
       );
@@ -70,7 +70,7 @@ class GetUserService {
   Future<bool> register(BuildContext context, data) async {
     final api = Api();
     final response = await api.post(
-      url: '${_kApiUrl}register/',
+      url: '${_kApiUrl}register',
       headers: await get_headers(context),
       body: json.encode(data),
     );
