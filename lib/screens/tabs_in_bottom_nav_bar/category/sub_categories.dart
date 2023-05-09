@@ -74,10 +74,10 @@ class _SubCategoriesState extends State<SubCategories> {
                         'INSERT INTO "favorite" (cityId, categoryId) VALUES("$selectedCityId", "$categoryId")');
                     print(response);
                     if(response>0){
-                      starIcon=Icons.star;
-                      starIconColor =Colors.orangeAccent;
-                      setState(() {
 
+                      setState(() {
+                        starIcon=Icons.star;
+                        starIconColor =Colors.orangeAccent;
                       });
                     }
                   },
