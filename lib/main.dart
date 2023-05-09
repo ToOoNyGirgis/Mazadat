@@ -4,6 +4,7 @@ import 'package:news_app/helper/is_loged_in.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
 
   runApp(
     EasyLocalization(
-        supportedLocales: const [Locale('ar', ''), Locale('en', '')],
+        supportedLocales: const [Locale('ar', '')],
         path: 'assets/lang',
         fallbackLocale: const Locale('ar', ''),
         child: const MyApp()),
@@ -29,12 +30,14 @@ class MyApp extends StatelessWidget {
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
+        initialRoute: AuthScreen.id,
         routes: {
           AuthScreen.id: (context) => IsLoggedIn(),
           HomeScreen.id: (context) => const HomeScreen(),
           BottomNavBarScreen.id: (context) => const BottomNavBarScreen(),
-          CategoryScreen.id: (context) => const CategoryScreen(),
+          CategoryScreen.id: (context) => CategoryScreen(),
           ViewScreen.id: (context) => ViewScreen(),
+          SubCategories.id: (context) => SubCategories(),
         },
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
@@ -44,7 +47,6 @@ class MyApp extends StatelessWidget {
           fontFamily: "Tajawal",
           primarySwatch: Colors.blue,
         ),
-        initialRoute: AuthScreen.id,
       );
     });
   }

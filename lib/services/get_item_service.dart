@@ -66,4 +66,30 @@ class ItemService {
       throw Exception("Bad response format 👎");
     }
   }
+
+  Future<List<ItemsModel>> filter(BuildContext context, data) async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse('${_kApiUrl}filter'),
+        headers: await get_headers(context),
+        body: json.encode(data),
+      );
+
+      if (response.statusCode != 200) {
+        var data = jsonDecode(response.body);
+        throw Exception(data['message']);
+      }
+      final items = json.decode(response.body)['data'] as List?;
+      List<ItemsModel> list =
+      items!.map((val) => ItemsModel.fromJson(val)).toList();
+      return list;
+    } on SocketException {
+      throw Exception('No Internet connection 😑');
+    } on HttpException {
+      throw Exception("Couldn't find the post 😱");
+    } on FormatException {
+      throw Exception("Bad response format 👎");
+    }
+  }
+
 }

@@ -41,10 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
         length: categories.length,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('الصفحة الرئيسية'),
-            centerTitle: true,
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(kTextTabBarHeight),
+              preferredSize: const Size.fromHeight(1),
               child: BlocBuilder<HomeCubit, HomeState>(
                 bloc: homeCubit,
                 builder: (context, state) {

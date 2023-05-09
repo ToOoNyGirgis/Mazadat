@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:news_app/cubits/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/favorites/favorites_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/more/more_screen.dart';
 import 'package:sizer/sizer.dart';
+
+import 'category/category_screen.dart';
 
 
 class BottomNavBarScreen extends StatelessWidget {
@@ -20,11 +21,11 @@ class BottomNavBarScreen extends StatelessWidget {
       child: Scaffold(
         body: BlocBuilder<BottomNavBarCubit, int>(
           builder: (context, state) {
-            const List<Widget> tabs = [
-              HomeScreen(),
-              FavoritesScreen(),
+             List<Widget> tabs = [
+              const HomeScreen(),
+              const FavoritesScreen(),
               CategoryScreen(),
-              MoreScreen(),
+              const MoreScreen(),
             ];
             return tabs[state];
           },
@@ -36,6 +37,7 @@ class BottomNavBarScreen extends StatelessWidget {
             child: BlocBuilder<BottomNavBarCubit, int>(
               builder: (context, state) {
                 return GNav(
+                  iconSize: 22.sp,
                   padding:
                   EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                   tabs: const [
@@ -44,7 +46,7 @@ class BottomNavBarScreen extends StatelessWidget {
                       text: 'الرئيسية',
                     ),
                     GButton(
-                      icon: Icons.favorite_border,
+                      icon: Icons.star,
                       text: 'المفضلة',
                     ),
                     GButton(

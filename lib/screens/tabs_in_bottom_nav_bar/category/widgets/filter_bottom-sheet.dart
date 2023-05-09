@@ -76,7 +76,10 @@ class FilterBottomSheet extends StatelessWidget {
                           side: const BorderSide(color: Colors.grey),
                         ),
                         onTap: () {
-                          Navigator.pop(context, cities[index].name);
+                          Navigator.pop(context, {
+                            'name':cities[index].name,
+                            'id':cities[index].id,
+                          });
                         },
                         title: Padding(
                           padding: EdgeInsets.all(8.sp),

@@ -6,17 +6,14 @@ class FavoritesScreen extends StatelessWidget {
   static String id = 'category';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('favorite'),
-        centerTitle: true,
+    return SafeArea(
+      child: Scaffold(
+        body: GridView.builder(
+            itemCount: 7,
+            gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) => FavoritesItem(index: index,)),
       ),
-      body: GridView.builder(
-          itemCount: 7,
-          gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (context, index) => FavoritesItem(index: index,)),
     );
   }
 }

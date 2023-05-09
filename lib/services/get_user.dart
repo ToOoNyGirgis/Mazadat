@@ -80,6 +80,7 @@ class GetUserService {
       // store token in sharedPreference
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString(kAccessTokenInPref, response['data']);
+
       return true;
     } else {
       // show the response['message']

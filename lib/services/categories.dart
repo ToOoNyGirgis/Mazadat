@@ -43,31 +43,6 @@ class CategoriesService {
     }
   }
 
-  Future<List<CategoriesModel>> filter(BuildContext context, data) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse('${_kApiUrl}getAll'),
-        headers: await get_headers(context),
-        body: json.encode(data),
-      );
-
-      if (response.statusCode != 200) {
-        var data = jsonDecode(response.body);
-        throw Exception(data['error']['message']);
-      }
-      final items = json.decode(response.body)['data'] as List?;
-      List<CategoriesModel> list =
-          items!.map((val) => CategoriesModel.fromJson(val)).toList();
-      return list;
-    } on SocketException {
-      throw Exception('No Internet connection 😑');
-    } on HttpException {
-      throw Exception("Couldn't find the post 😱");
-    } on FormatException {
-      throw Exception("Bad response format 👎");
-    }
-  }
-
   Future<List<CategoriesModel>> getSub(
       BuildContext context, String categoryId) async {
     try {

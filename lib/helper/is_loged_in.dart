@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/constant.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +28,7 @@ class _IsLoggedInState extends State<IsLoggedIn> {
       if (token == null) {
         return AuthScreen();
       } else {
-        return HomeScreen();
+        return BottomNavBarScreen();
       }
     }
   }
