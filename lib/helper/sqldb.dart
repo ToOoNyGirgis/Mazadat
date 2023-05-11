@@ -1,3 +1,4 @@
+import 'package:news_app/common/constant.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -26,8 +27,10 @@ class SqlDb {
     await db.execute('''
     CREATE TABLE "favorite"(
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "cityId" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL
+    "$kCityIdDB" TEXT NOT NULL,
+    "$kCityNameDB" TEXT NOT NULL,
+    "$kCategoryIdDB" TEXT NOT NULL,
+    "$kCategoryNameDB" TEXT NOT NULL
     )
   ''');
     print('Create DATABASE =========================================');
@@ -38,6 +41,28 @@ class SqlDb {
     List<Map> response =await myDb!.rawQuery(sql);
     return response;
   }
+
+  Future<List<Map<String, dynamic>>> readDataWithWhere(int categoryId, int? cityId) async {
+    Database? myDb = await db;
+    print(cityId);
+    if (cityId == null) {
+      List<Map<String, dynamic>> results = await myDb!.query(
+        'favorite',
+        where: '$kCategoryIdDB = ? ',
+        whereArgs: [categoryId],
+      );
+    return results;
+    }
+    else {
+      List<Map<String, dynamic>> results = await myDb!.query(
+        'favorite',
+        where: '$kCategoryIdDB = ? AND $kCityIdDB = ? ',
+        whereArgs: [categoryId , cityId],
+      );
+      return results;
+    }
+  }
+
   insertData(String sql) async {
     Database? myDb =await db;
     int response =await myDb!.rawInsert(sql);
@@ -53,5 +78,10 @@ class SqlDb {
     Database? myDb =await db;
     int response =await myDb!.rawUpdate(sql);
     return response;
+  }
+
+  Future<void> deleteTable(String tableName) async {
+    Database? myDb = await db;
+    await myDb!.execute('DROP TABLE IF EXISTS $tableName');
   }
 }

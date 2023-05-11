@@ -44,7 +44,7 @@ class CategoriesService {
   }
 
   Future<List<CategoriesModel>> getSub(
-      BuildContext context, String categoryId) async {
+      BuildContext context, int categoryId) async {
     try {
       http.Response response = await http.get(
           Uri.parse('${_kApiUrl}getSubs/$categoryId'),

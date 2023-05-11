@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/categories_model.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories.dart';
-import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -24,27 +23,24 @@ class CategoryItem extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
-            child: Card(
-              elevation: 15,
-              child: Padding(
-                padding:   EdgeInsets.symmetric(horizontal: 4.w,vertical:1.h ,),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Text(
-                        categories.name,
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+          Card(
+            elevation: 15,
+            child: Padding(
+              padding:   EdgeInsets.symmetric(horizontal: 4.w,vertical:1.h ,),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      categories.name,
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Row()
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
