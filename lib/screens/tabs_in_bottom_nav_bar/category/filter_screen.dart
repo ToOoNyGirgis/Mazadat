@@ -170,7 +170,6 @@ class _FilterScreenState extends State<FilterScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<ItemsModel> items = snapshot.data!;
-                    // print(items);
                     return ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         itemCount: items.length,
