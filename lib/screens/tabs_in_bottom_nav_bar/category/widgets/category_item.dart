@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/categories_model.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryItem extends StatelessWidget {
-  CategoryItem({Key? key, required this.categories}) : super(key: key);
+  CategoryItem({Key? key, required this.categories, required this.screenNameToNavigate , }) : super(key: key);
   CategoriesModel categories;
+  final String screenNameToNavigate;
   int? categoryId;
   String? categoryName;
   @override
@@ -14,7 +15,7 @@ class CategoryItem extends StatelessWidget {
       onTap: () {
         categoryId=categories.id;
         categoryName = categories.name;
-        Navigator.pushNamed(context, SubCategories.id,
+        Navigator.pushNamed(context, screenNameToNavigate,
             arguments: {
           'categoryId':categoryId,
           'categoryName':categoryName,

@@ -34,30 +34,44 @@ class FilterBottomSheet extends StatelessWidget {
                     SizedBox(
                       height: 2.h,
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          splashColor: Colors.transparent,
-                          splashRadius: 22,
-                          iconSize: 18.sp,
-                          constraints: const BoxConstraints(maxWidth: 40),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.close_outlined,
-                            color: Colors.grey,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                splashColor: Colors.transparent,
+                                splashRadius: 22,
+                                iconSize: 18.sp,
+                                constraints: const BoxConstraints(maxWidth: 40),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.close_outlined,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              SizedBox(width: 6.w),
+                              Text(
+                                'المدينة',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(width: 6.w),
-                        Text(
-                          'المدينة',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                      ],
+                          // TextButton(onPressed: (){
+                          //   Navigator.pop(context, {
+                          //     // 'name':'اسوان',
+                          //     // 'id':2,
+                          //   });
+                          // }, child: Text('كل المدن'))
+                        ],
+                      ),
                     ),
                     SizedBox(height: 3.h),
                   ],

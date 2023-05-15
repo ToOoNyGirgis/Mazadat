@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/categories_model.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/widgets/category_item.dart';
 import 'package:news_app/services/categories.dart';
 
@@ -30,6 +31,7 @@ class CategoryBody extends StatelessWidget {
                   itemBuilder: (context, index) => Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: CategoryItem(
+                          screenNameToNavigate: SubCategories.id,
                           categories: categories[index],
                         ),
                       ));

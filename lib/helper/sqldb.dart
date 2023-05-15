@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:news_app/common/constant.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -20,7 +21,9 @@ class SqlDb {
   }
 
   _onUpdate(Database db , int oldVersion , int newVersion){
-    print('onUpgrade ==========================================');
+    if (kDebugMode) {
+      print('onUpgrade ==========================================');
+    }
   }
 
   _onCreate(Database db, int version) async {
@@ -33,7 +36,9 @@ class SqlDb {
     "$kCategoryNameDB" TEXT NOT NULL
     )
   ''');
-    print('Create DATABASE =========================================');
+    if (kDebugMode) {
+      print('Create DATABASE =========================================');
+    }
   }
 
   readData(String sql) async {
@@ -42,14 +47,13 @@ class SqlDb {
     return response;
   }
 
-  Future<List<Map<String, dynamic>>> readDataWithWhere(int categoryId, int? cityId) async {
+  Future<List<Map<String, dynamic>>> readDataWithWhere(int categoryId, int? cityId,String? cityName) async {
     Database? myDb = await db;
-    print(cityId);
     if (cityId == null) {
       List<Map<String, dynamic>> results = await myDb!.query(
         'favorite',
-        where: '$kCategoryIdDB = ? ',
-        whereArgs: [categoryId],
+        where: '$kCategoryIdDB = ? AND $kCityNameDB = ? ',
+        whereArgs: [categoryId , cityName],
       );
     return results;
     }

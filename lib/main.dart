@@ -4,7 +4,8 @@ import 'package:news_app/helper/is_loged_in.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/category_screen.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/filter_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
           HomeScreen.id: (context) => const HomeScreen(),
           BottomNavBarScreen.id: (context) => const BottomNavBarScreen(),
           CategoryScreen.id: (context) => CategoryScreen(),
-          ViewScreen.id: (context) => ViewScreen(),
+          ViewScreen.id: (context) => const ViewScreen(),
           SubCategories.id: (context) => SubCategories(),
+          FilterScreen.id: (context) => const FilterScreen(),
         },
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
