@@ -163,7 +163,7 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: ItemService().filter(context, {
+                future: ItemService().filter( {
                   'category_id': categoryId.toString(),
                   'city_id': selectedCityId,
                 }),

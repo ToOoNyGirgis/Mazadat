@@ -11,18 +11,17 @@ class ItemService {
   late Map<String, String> requestHeaders;
   static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/items/';
 
-  get_headers(BuildContext context) async {
+  get_headers() async {
     return requestHeaders = {
       'Content-type': 'application/json',
-      'lang': context.locale.toString(),
       'token': "token"
     };
   }
 
-  Future<List<ItemsModel>> getItem(BuildContext context, int itemId) async {
+  Future<List<ItemsModel>> getItem( int itemId) async {
     try {
       http.Response response = await http.get(Uri.parse('$_kApiUrl$itemId'),
-          headers: await get_headers(context));
+          headers: await get_headers());
 
       if (response.statusCode != 200) {
         var data = jsonDecode(response.body);
@@ -67,11 +66,11 @@ class ItemService {
     }
   }
 
-  Future<List<ItemsModel>> filter(BuildContext context, data) async {
+  Future<List<ItemsModel>> filter( data) async {
     try {
       http.Response response = await http.post(
         Uri.parse('${_kApiUrl}filter'),
-        headers: await get_headers(context),
+        headers: await get_headers(),
         body: json.encode(data),
       );
 

@@ -59,7 +59,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           // Text(favoritesData[index][kCategoryIdDB]),
                           // Text(favoritesData[index][kCityIdDB]),
                           FutureBuilder(
-                              future: ItemService().filter(context, {
+                              future: ItemService().filter( {
                                 'category_id': favoritesData[index]
                                         [kCategoryIdDB]
                                     .toString(),

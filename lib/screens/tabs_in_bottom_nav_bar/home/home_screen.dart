@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<CategoriesModel> categories = [];
 
+
   @override
   void initState() {
     super.initState();

@@ -21,7 +21,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await checkInternet();
       categories = await _categoriesService.getCategories();
-      List<ItemsModel> items = await _itemService.getAllCategoryItems(101);
+      List<ItemsModel> items = await _itemService.filter({
+        'category_id':categories[11].id
+      });
       emit(HomeSuccess(items: items, category: categories));
     } catch (error) {
       if (_internet == false) {
