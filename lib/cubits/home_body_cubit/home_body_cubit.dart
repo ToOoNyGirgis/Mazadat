@@ -21,12 +21,13 @@ class HomeBodyCubit extends Cubit<HomeBodyState> {
     }
   }
 
-  Future<void> getDataForEachTab( CategoriesModel category) async {
+  Future<void> getDataForEachTab( int category) async {
     emit(HomeBodyLoading());
     try {
       await checkInternet();
+      print(category);
       List<ItemsModel> items = await _itemService.filter({
-        'category_id':category.id
+        'category_id':category.toString()
       });
       emit(HomeBodySuccess(items: items));
     } catch (error) {

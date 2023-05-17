@@ -13,16 +13,21 @@ class ItemsInFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(items.title),
-      onTap: () {},
-      leading: Image.network(items.image),
-      subtitle: Padding(
-        padding: EdgeInsets.symmetric(vertical: 1.h),
-        child: Text(
-          items.desc,
-          style: const TextStyle(
-            overflow: TextOverflow.ellipsis,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: Card(
+        child: ListTile(
+          title: Text(items.title),
+          onTap: () {},
+          leading: Image.network(items.image),
+          subtitle: Padding(
+            padding: EdgeInsets.symmetric(vertical: 1.h),
+            child: Text(
+              items.desc,
+              style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         ),
       ),

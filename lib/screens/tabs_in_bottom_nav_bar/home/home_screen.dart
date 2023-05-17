@@ -88,8 +88,9 @@ class TabBarViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(category.id);
     final homeBodyCubit = HomeBodyCubit(ItemService());
-    homeBodyCubit.getDataForEachTab(category);
+    homeBodyCubit.getDataForEachTab(category.id);
     return BlocBuilder<HomeBodyCubit, HomeBodyState>(
       bloc: homeBodyCubit,
       builder: (context, state) {
@@ -98,58 +99,72 @@ class TabBarViewBody extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is HomeBodySuccess) {
-          return ListView.builder(
-            itemCount: state.items.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          state.items[index].subCategory,
-                          style: TextStyle(fontSize: 24.sp),
-                        ),
+          print(state.items);
+
+          if (state.items.isNotEmpty) {
+            return ListView.builder(
+              itemCount: state.items.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                  child: Card(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                state.items[index].subCategory,
+                                style: TextStyle(fontSize: 24.sp),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Container(
+                            height: 250.0,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(state.items[index].image),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              state.items[index].title,
+                              style: TextStyle(fontSize: 24.sp),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Container(
-                      height: 250.0,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(state.items[index].image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        state.items[index].title,
-                        style: TextStyle(fontSize: 24.sp),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
+                  ),
+                );
+              },
+            );
+          }
+          return const Center(child: Text('عذراً لا توجد بيانات'));
         } else if (state is HomeBodyFailure) {
           return Center(
-              child: Text('حدث خطأ أثناء عرض البيانات: ${state.errMessage}'));
+              child: Text(
+            'حدث خطأ أثناء عرض البيانات: ${state.errMessage}',
+            style: const TextStyle(fontSize: 22),
+          ));
         } else if (state is HomeBodyNoInternet) {
-          return Text('تأكد من وجود انترنت');
+          return const Text('تأكد من وجود انترنت');
         } else
-          return Text('عذرا لا توجد بيانات');
+          return const Text('عذرا لا توجد بيانات');
       },
     );
 
