@@ -9,10 +9,8 @@ import 'package:news_app/services/get_item_service.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._categoriesService, this._itemService) : super(HomeInitial());
+  HomeCubit(this._categoriesService) : super(HomeInitial());
   final CategoriesService _categoriesService;
-  final ItemService _itemService;
-  late TabController _tabController;
   late List<CategoriesModel> categories;
   bool? _internet;
 
@@ -21,10 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await checkInternet();
       categories = await _categoriesService.getCategories();
-      List<ItemsModel> items = await _itemService.filter({
-        'category_id':categories[11].id
-      });
-      emit(HomeSuccess(items: items, category: categories));
+      emit(HomeSuccess( category: categories));
     } catch (error) {
       if (_internet == false) {
         emit(HomeNoInternet());
@@ -42,4 +37,6 @@ class HomeCubit extends Cubit<HomeState> {
       _internet = false;
     }
   }
+
+
 }

@@ -24,12 +24,50 @@ class _FilterScreenState extends State<FilterScreen> {
   Color starIconColor = Colors.black;
   int? selectedCityId;
   bool isPressed = false;
+  final controller = ScrollController();
+  int page = 0;
+  bool hasMore = true;
+  bool _isLoading = false;
+  List<ItemsModel> items = [];
 
   @override
   void initState() {
     super.initState();
     selectedCityName = 'المدينة';
     selectedCityId = null;
+    controller.addListener(() {
+      if(controller.position.maxScrollExtent==controller.offset){
+        fetchData();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> fetchData() async {
+    if(_isLoading)return;
+    _isLoading = true;
+    const limit = 25;
+    final newItems = await ItemService().filter(
+        {
+      'category_id': categoryId.toString(),
+      'city_id': selectedCityId,
+      'page': page,
+      'limit': limit,
+    }
+    );
+    setState(() {
+      page++;
+      _isLoading=false;
+      if (newItems.length<limit) {
+        hasMore = false;
+      }
+      items.addAll(newItems);
+    });
   }
 
   SqlDb sqlDb = SqlDb();
@@ -38,13 +76,26 @@ class _FilterScreenState extends State<FilterScreen> {
     return response;
   }
 
+  Future<void>refresh()async{
+    setState(() {
+
+      _isLoading=false;
+      hasMore=true;
+      page=0;
+      items.clear();
+    });
+    fetchData();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final args =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       categoryId = args['categoryId'] as int;
       categoryName = args['categoryName'] as String;
+      fetchData();
     }
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +132,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   ],
                 ),
                 FutureBuilder(
-                  future: sqlDb.readDataWithWhere(categoryId, selectedCityId , selectedCityName),
+                  future: sqlDb.readDataWithWhere(
+                      categoryId, selectedCityId, selectedCityName),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Map>> snapshot) {
                     if (snapshot.hasData) {
@@ -98,40 +150,39 @@ class _FilterScreenState extends State<FilterScreen> {
                       return IconButton(
                         onPressed: isPressed == false
                             ? () async {
-                          int response = await sqlDb.insertData(
-                              'INSERT INTO "favorite" ($kCityIdDB, $kCityNameDB, $kCategoryIdDB, $kCategoryNameDB) VALUES("$selectedCityId", "$selectedCityName", "$categoryId", "$categoryName")');
-                          if (response > 0) {
-                            setState(() {
-                              starIcon = Icons.star;
-                              starIconColor = Colors.orangeAccent;
-                              isPressed = true;
-                            });
-                          }
-                        }
+                                int response = await sqlDb.insertData(
+                                    'INSERT INTO "favorite" ($kCityIdDB, $kCityNameDB, $kCategoryIdDB, $kCategoryNameDB) VALUES("$selectedCityId", "$selectedCityName", "$categoryId", "$categoryName")');
+                                if (response > 0) {
+                                  setState(() {
+                                    starIcon = Icons.star;
+                                    starIconColor = Colors.orangeAccent;
+                                    isPressed = true;
+                                  });
+                                }
+                              }
                             : () async {
-                          if (selectedCityId == null) {
-                            int response = await sqlDb.deleteData(
-                                'DELETE FROM "favorite" WHERE "$kCityNameDB" = "$selectedCityName"');
-                            if (response > 0) {
-                              setState(() {
-                                starIcon = Icons.star_border;
-                                starIconColor = Colors.black;
-                                isPressed = false;
-                              });
-                            }
-                          } else {
-
-                            int response = await sqlDb.deleteData(
-                                'DELETE FROM "favorite" WHERE "$kCategoryIdDB" = "$categoryId" AND "$kCityIdDB" = "$selectedCityId"');
-                            if (response > 0) {
-                              setState(() {
-                                starIcon = Icons.star_border;
-                                starIconColor = Colors.black;
-                                isPressed = false;
-                              });
-                            }
-                          }
-                        },
+                                if (selectedCityId == null) {
+                                  int response = await sqlDb.deleteData(
+                                      'DELETE FROM "favorite" WHERE "$kCityNameDB" = "$selectedCityName"');
+                                  if (response > 0) {
+                                    setState(() {
+                                      starIcon = Icons.star_border;
+                                      starIconColor = Colors.black;
+                                      isPressed = false;
+                                    });
+                                  }
+                                } else {
+                                  int response = await sqlDb.deleteData(
+                                      'DELETE FROM "favorite" WHERE "$kCategoryIdDB" = "$categoryId" AND "$kCityIdDB" = "$selectedCityId"');
+                                  if (response > 0) {
+                                    setState(() {
+                                      starIcon = Icons.star_border;
+                                      starIconColor = Colors.black;
+                                      isPressed = false;
+                                    });
+                                  }
+                                }
+                              },
                         icon: Icon(
                           starIcon,
                           color: starIconColor,
@@ -162,26 +213,27 @@ class _FilterScreenState extends State<FilterScreen> {
               ],
             ),
             Expanded(
-              child: FutureBuilder(
-                future: ItemService().filter( {
-                  'category_id': categoryId.toString(),
-                  'city_id': selectedCityId,
-                }),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<ItemsModel> items = snapshot.data!;
-                    return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: items.length,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: ItemsInFilter(items: items[index]),
-                        ));
-                  } else if (snapshot.hasError) {
-                    const Text('Sorry there is an error');
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                },
+              child: RefreshIndicator(
+                onRefresh: refresh,
+                child: ListView.builder(
+                  controller: controller,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: items.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index < items.length) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: ItemsInFilter(items: items[index]),
+                      );
+                    } else {
+                      return Center(
+                        child: hasMore
+                            ? CircularProgressIndicator()
+                            : Text('No more data to show'),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],
@@ -190,4 +242,3 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 }
-

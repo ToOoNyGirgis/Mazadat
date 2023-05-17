@@ -54,6 +54,7 @@ class CategoriesService {
         var data = jsonDecode(response.body);
         throw Exception(data['error']['message']);
       }
+      
       final items = json.decode(response.body)['data'] as List?;
       List<CategoriesModel> list =
           items!.map((val) => CategoriesModel.fromJson(val)).toList();

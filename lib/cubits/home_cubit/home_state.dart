@@ -10,10 +10,8 @@ class HomeLoading extends HomeState {}
 class HomeNoInternet extends HomeState {}
 
 class HomeSuccess extends HomeState {
-  List<ItemsModel> items;
   List<CategoriesModel> category;
   HomeSuccess({
-    required this.items,
     required this.category,
   });
 }
