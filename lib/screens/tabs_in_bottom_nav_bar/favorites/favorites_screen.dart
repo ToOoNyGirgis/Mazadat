@@ -39,63 +39,127 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 shrinkWrap: true,
                 itemCount: favoritesData!.length,
                 itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'الفئة : ${favoritesData[index][kCategoryNameDB]}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                  print(favoritesData[index][kCityIdDB]);
+                  if (favoritesData[index][kCityIdDB]==null) {
+                    return  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'الفئة : ${favoritesData[index][kCategoryNameDB]}',
+                          style:
+                          const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        favoritesData[index][kCityNameDB] != 'المدينة'
+                            ? Text(
+                          'المدينة : ${favoritesData[index][kCityNameDB]}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold),
+                        )
+                            : const Text(
+                          'لم يتم اختيار مدينة',
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        // Text(favoritesData[index][kCategoryIdDB]),
+                        // Text(favoritesData[index][kCityIdDB]),
+                        FutureBuilder(
+                          future: ItemService().filter({
+                            'category_id': favoritesData[index]
+                            [kCategoryIdDB]
+                                .toString(),
+                            'city_id': favoritesData[index][kCityIdDB],
+                          }),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> filterSnapshot) {
+                            if (filterSnapshot.hasData) {
+                              List<ItemsModel> items = filterSnapshot.data!;
+                              return items.length != 0
+                                  ? ListView.builder(
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                itemCount: items.length,
+                                itemBuilder: (context, filterIndex) {
+                                  return ItemsInFilter(
+                                      items: items[filterIndex]);
+                                },
+                              )
+                                  : Text('لا توجد بيانات');
+                            } else if (filterSnapshot.hasError) {
+                              return Text('حدث خطأ');
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          },
+                        ),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                      ],
+                    );
+                  }
+                  else{
+                    return  Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'الفئة : ${favoritesData[index][kCategoryNameDB]}',
+                            style:
+                            const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          favoritesData[index][kCityNameDB] != 'المدينة'
+                              ? Text(
+                            'المدينة : ${favoritesData[index][kCityNameDB]}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold),
+                          )
+                              : const Text(
+                            'لم يتم اختيار مدينة',
+                            style:
+                            TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          // Text(favoritesData[index][kCategoryIdDB]),
+                          // Text(favoritesData[index][kCityIdDB]),
+                          FutureBuilder(
+                            future: ItemService().filter({
+                              'category_id': favoritesData[index]
+                              [kCategoryIdDB]
+                                  .toString(),
+                            }),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic> filterSnapshot) {
+                              if (filterSnapshot.hasData) {
+                                List<ItemsModel> items = filterSnapshot.data!;
+                                return items.length != 0
+                                    ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics:
+                                  const NeverScrollableScrollPhysics(),
+                                  itemCount: items.length,
+                                  itemBuilder: (context, filterIndex) {
+                                    return ItemsInFilter(
+                                        items: items[filterIndex]);
+                                  },
+                                )
+                                    : Text('لا توجد بيانات');
+                              } else if (filterSnapshot.hasError) {
+                                return Text('حدث خطأ');
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            },
+                          ),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                        ],
                       ),
-                      favoritesData[index][kCityNameDB] != 'المدينة'
-                          ? Text(
-                              'المدينة : ${favoritesData[index][kCityNameDB]}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          : const Text(
-                              'لم يتم اختيار مدينة',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                      // Text(favoritesData[index][kCategoryIdDB]),
-                      // Text(favoritesData[index][kCityIdDB]),
-                      FutureBuilder(
-                        future: ItemService().filter({
-                          'category_id':
-                              favoritesData[index][kCategoryIdDB].toString(),
-                          'city_id': favoritesData[index][kCityIdDB],
-                        }),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> filterSnapshot) {
-                          if (filterSnapshot.hasData) {
-                            List<ItemsModel> items = filterSnapshot.data!;
-                            return items.length != 0
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: items.length,
-                                    itemBuilder: (context, filterIndex) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        child: ItemsInFilter(
-                                            items: items[filterIndex]),
-                                      );
-                                    },
-                                  )
-                                : Text('لا توجد بيانات');
-                          } else if (filterSnapshot.hasError) {
-                            return Text('حدث خطأ');
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        },
-                      ),
-                      const Divider(
-                        thickness: 2,
-                      ),
-                    ],
-                  );
+                    );
+                  }
                 },
               );
             }

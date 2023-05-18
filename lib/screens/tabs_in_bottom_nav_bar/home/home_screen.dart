@@ -103,37 +103,40 @@ class TabBarViewBody extends StatelessWidget {
           print(state.items);
 
           if (state.items.isNotEmpty) {
-            return ListView.builder(
-              itemCount: state.items.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                  child: Card(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                      child: ListTile(
-                        title: Text(state.items[index].title),
-                        leading: Image.network(state.items[index].image),
-                        subtitle: Padding(
-                          padding: EdgeInsets.only(top: 1.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(state.items[index].subCategory),
-                              Text(
-                                DateFormat('dd-MM-yyyy').format(
-                                  DateTime.parse(state.items[index].date),
+            return Padding(
+              padding:  EdgeInsets.only(top: 2.h),
+              child: ListView.builder(
+                itemCount: state.items.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: Card(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                        child: ListTile(
+                          title: Text(state.items[index].title),
+                          leading: Image.network(state.items[index].image),
+                          subtitle: Padding(
+                            padding: EdgeInsets.only(top: 1.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(state.items[index].subCategory),
+                                Text(
+                                  DateFormat('dd-MM-yyyy').format(
+                                    DateTime.parse(state.items[index].date),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           }
           return const Center(child: Text('عذراً لا توجد بيانات'));

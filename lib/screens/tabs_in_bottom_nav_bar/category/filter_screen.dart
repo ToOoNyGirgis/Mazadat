@@ -229,7 +229,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       return Center(
                         child: hasMore
                             ? CircularProgressIndicator()
-                            : Text('No more data to show'),
+                            : Text('لا توجد بيانات اخري لعرضها'),
                       );
                     }
                   },
