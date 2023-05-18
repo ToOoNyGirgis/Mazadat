@@ -3,8 +3,8 @@ class ItemsModel {
   final String title;
   final String desc;
   final String date;
-  final String time;
-  final String mobile;
+  // final String time;
+  // final String mobile;
   // final String city;
   final String cityId;
   final String category;
@@ -19,8 +19,8 @@ class ItemsModel {
     required this.id,
     required this.title,
     required this.date,
-    required this.time,
-    required this.mobile,
+    // required this.time,
+    // required this.mobile,
     // required this.city,
     required this.cityId,
     required this.category,
@@ -37,11 +37,11 @@ class ItemsModel {
       title: jsonData['title'],
       image: jsonData['image'],
       category: jsonData['category'],
-      date: jsonData['date'],
+      date: jsonData['created_at'],
       // city: jsonData['city'],
-      mobile: jsonData['mobile'],
+      // mobile: jsonData['mobile'],
       subCategory: jsonData['sub_category'],
-      time: jsonData['time'],
+      // time: jsonData['time'],
       // images: jsonData['images'],
       cityId: jsonData['city_id'],
       categoryId: jsonData['category_id'],

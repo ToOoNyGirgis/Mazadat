@@ -36,6 +36,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             if (snapshot.hasData) {
               List<Map<dynamic, dynamic>>? favoritesData = snapshot.data;
               return ListView.builder(
+                shrinkWrap: true,
                 itemCount: favoritesData!.length,
                 itemBuilder: (context, index) {
                   return Column(
@@ -51,25 +52,24 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             )
-                          :const Text(
-                        'لم يتم اختيار مدينة',
-                        style:
-                        TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                          // Text(favoritesData[index][kCategoryIdDB]),
-                          // Text(favoritesData[index][kCityIdDB]),
-                          FutureBuilder(
-                              future: ItemService().filter( {
-                                'category_id': favoritesData[index]
-                                        [kCategoryIdDB]
-                                    .toString(),
-                                'city_id': favoritesData[index][kCityIdDB],
-                              }),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic> filterSnapshot) {
-                                if (filterSnapshot.hasData) {
-                                  List<ItemsModel> items = filterSnapshot.data!;
-                                  return ListView.builder(
+                          : const Text(
+                              'لم يتم اختيار مدينة',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                      // Text(favoritesData[index][kCategoryIdDB]),
+                      // Text(favoritesData[index][kCityIdDB]),
+                      FutureBuilder(
+                        future: ItemService().filter({
+                          'category_id':
+                              favoritesData[index][kCategoryIdDB].toString(),
+                          'city_id': favoritesData[index][kCityIdDB],
+                        }),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> filterSnapshot) {
+                          if (filterSnapshot.hasData) {
+                            List<ItemsModel> items = filterSnapshot.data!;
+                            return items.length != 0
+                                ? ListView.builder(
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
@@ -81,13 +81,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                             items: items[filterIndex]),
                                       );
                                     },
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                              },
-                            ),
+                                  )
+                                : Text('لا توجد بيانات');
+                          } else if (filterSnapshot.hasError) {
+                            return Text('حدث خطأ');
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
                       const Divider(
                         thickness: 2,
                       ),

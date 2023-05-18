@@ -222,7 +222,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   itemBuilder: (context, index) {
                     if (index < items.length) {
                       return Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 10),
                         child: ItemsInFilter(items: items[index]),
                       );
                     } else {

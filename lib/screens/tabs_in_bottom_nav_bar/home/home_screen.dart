@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:news_app/cubits/home_body_cubit/home_body_cubit.dart';
 import 'package:news_app/cubits/home_cubit/home_cubit.dart';
 import 'package:news_app/models/categories_model.dart';
@@ -110,43 +111,24 @@ class TabBarViewBody extends StatelessWidget {
                   child: Card(
                     child: Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                state.items[index].subCategory,
-                                style: TextStyle(fontSize: 24.sp),
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                      child: ListTile(
+                        title: Text(state.items[index].title),
+                        leading: Image.network(state.items[index].image),
+                        subtitle: Padding(
+                          padding: EdgeInsets.only(top: 1.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(state.items[index].subCategory),
+                              Text(
+                                DateFormat('dd-MM-yyyy').format(
+                                  DateTime.parse(state.items[index].date),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          Container(
-                            height: 250.0,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(state.items[index].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              state.items[index].title,
-                              style: TextStyle(fontSize: 24.sp),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
