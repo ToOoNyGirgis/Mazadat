@@ -7,6 +7,7 @@ import 'package:news_app/models/categories_model.dart';
 import 'package:news_app/models/items_model.dart';
 import 'package:news_app/services/categories.dart';
 import 'package:news_app/services/get_item_service.dart';
+import 'package:news_app/services/notification_service.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,10 +20,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<CategoriesModel> categories = [];
+  NotificationServices notificationServices = NotificationServices();
+
 
   @override
   void initState() {
     super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.isTokenRefresh();
+    notificationServices.setupInteractMessage(context);
+    notificationServices.firebaseInit(context);
+    notificationServices.getDeviceToken().then((value) {
+      print('device token is $value');
+    });
     CategoriesService().getCategories().then((data) {
       setState(() {
         categories = data;
@@ -153,79 +163,6 @@ class TabBarViewBody extends StatelessWidget {
       },
     );
 
-    // homeCubit.getDataForEachTab(index);
 
-    // return Padding(
-    //   padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
-    //   child: BlocBuilder<HomeCubit, HomeState>(
-    //     bloc: homeCubit,
-    //     builder: (context, state) {
-    //       if (state is HomeBodyLoading) {
-    //         return const Center(child: CircularProgressIndicator());
-    //       } else if (state is HomeBodySuccess) {
-    //         return ListView.builder(
-    //           physics: const BouncingScrollPhysics(),
-    //           itemCount: state.items.length,
-    //           itemBuilder: (context, index) => Padding(
-    //             padding: const EdgeInsets.only(top: 20),
-    //             child: Column(
-    //               children: [
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: SizedBox(
-    //                     width: double.infinity,
-    //                     child: Text(
-    //                       state.items[index].subCategory,
-    //                       style: TextStyle(fontSize: 24.sp),
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 SizedBox(
-    //                   height: 2.h,
-    //                 ),
-    //                 Container(
-    //                   height: 250.0,
-    //                   width: MediaQuery.of(context).size.width,
-    //                   decoration: BoxDecoration(
-    //                     image: DecorationImage(
-    //                       image: NetworkImage(state.items[index].image),
-    //                       fit: BoxFit.cover,
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 SizedBox(
-    //                   height: 2.h,
-    //                 ),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text(
-    //                     state.items[index].title,
-    //                     style: TextStyle(fontSize: 24.sp),
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         );
-    //       } else if (state is HomeBodyNoInternet) {
-    //         return Center(
-    //           child: Text(
-    //             'لا يوجد اتصال بالإنترنت',
-    //             style: TextStyle(fontSize: 24.sp),
-    //           ),
-    //         );
-    //       } else if (state is HomeBodyFailure) {
-    //         return Center(
-    //           child: Text(
-    //             'حدث خطأ أثناء عرض البيانات: ${state.errMessage}',
-    //             style: TextStyle(fontSize: 24.sp),
-    //           ),
-    //         );
-    //       } else {
-    //         return const SizedBox.shrink();
-    //       }
-    //     },
-    //   ),
-    // );
   }
 }

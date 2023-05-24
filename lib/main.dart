@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/helper/is_loged_in.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
@@ -11,7 +13,9 @@ import 'package:news_app/screens/view_item_screen/view_screen.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
 
   runApp(
@@ -21,6 +25,13 @@ Future<void> main() async {
         fallbackLocale: const Locale('ar', ''),
         child: const MyApp()),
   );
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
+
 }
 
 class MyApp extends StatelessWidget {

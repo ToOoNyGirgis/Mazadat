@@ -40,7 +40,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 itemCount: favoritesData!.length,
                 itemBuilder: (context, index) {
                   print(favoritesData[index][kCityIdDB]);
-                  if (favoritesData[index][kCityIdDB]==null) {
+                  if (favoritesData[index][kCityIdDB]!=null) {
                     return  Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

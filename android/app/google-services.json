@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "574115784708",
+    "project_id": "mazadat-9e27c",
+    "storage_bucket": "mazadat-9e27c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574115784708:android:77ac7a6b0b8ba1384cad51",
+        "android_client_info": {
+          "package_name": "com.example.news_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574115784708-l9cnt7d55tloan1h5je67rvac92vgjvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfZEfCwEzhqTv0CkUO41t4jnMfFlRLzak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574115784708-l9cnt7d55tloan1h5je67rvac92vgjvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

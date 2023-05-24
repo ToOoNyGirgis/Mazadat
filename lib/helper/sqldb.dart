@@ -12,15 +12,15 @@ class SqlDb {
     return _db;
   }
 
-
   Future<Database> initialDb() async {
     String dataBasePath = await getDatabasesPath();
     String path = join(dataBasePath, 'Mazadat.db');
-    Database myDb = await openDatabase(path, onCreate: _onCreate ,version:  1 ,onUpgrade: _onUpdate);
+    Database myDb = await openDatabase(path,
+        onCreate: _onCreate, version: 1, onUpgrade: _onUpdate);
     return myDb;
   }
 
-  _onUpdate(Database db , int oldVersion , int newVersion){
+  _onUpdate(Database db, int oldVersion, int newVersion) {
     if (kDebugMode) {
       print('onUpgrade ==========================================');
     }
@@ -36,51 +36,59 @@ class SqlDb {
     "$kCategoryNameDB" TEXT NOT NULL
     )
   ''');
+    await db.execute('''
+    CREATE TABLE notification (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "$kNotificationTitle" TEXT NOT NULL,
+  "$kNotificationBody" TEXT NOT NULL
+)
+  ''');
     if (kDebugMode) {
       print('Create DATABASE =========================================');
     }
   }
 
   readData(String sql) async {
-    Database? myDb =await db;
-    List<Map> response =await myDb!.rawQuery(sql);
+    Database? myDb = await db;
+    List<Map> response = await myDb!.rawQuery(sql);
     return response;
   }
 
-  Future<List<Map<String, dynamic>>> readDataWithWhere(int categoryId, int? cityId,String? cityName) async {
+  Future<List<Map<String, dynamic>>> readDataWithWhere(
+      int categoryId, int? cityId, String? cityName) async {
     Database? myDb = await db;
     if (cityId == null) {
       List<Map<String, dynamic>> results = await myDb!.query(
         'favorite',
         where: '$kCategoryIdDB = ? AND $kCityNameDB = ? ',
-        whereArgs: [categoryId , cityName],
+        whereArgs: [categoryId, cityName],
       );
-    return results;
-    }
-    else {
+      return results;
+    } else {
       List<Map<String, dynamic>> results = await myDb!.query(
         'favorite',
         where: '$kCategoryIdDB = ? AND $kCityIdDB = ? ',
-        whereArgs: [categoryId , cityId],
+        whereArgs: [categoryId, cityId],
       );
       return results;
     }
   }
 
   insertData(String sql) async {
-    Database? myDb =await db;
-    int response =await myDb!.rawInsert(sql);
+    Database? myDb = await db;
+    int response = await myDb!.rawInsert(sql);
     return response;
   }
+
   deleteData(String sql) async {
-    Database? myDb =await db;
-    int response =await myDb!.rawDelete(sql);
+    Database? myDb = await db;
+    int response = await myDb!.rawDelete(sql);
     return response;
   }
 
   updateData(String sql) async {
-    Database? myDb =await db;
-    int response =await myDb!.rawUpdate(sql);
+    Database? myDb = await db;
+    int response = await myDb!.rawUpdate(sql);
     return response;
   }
 

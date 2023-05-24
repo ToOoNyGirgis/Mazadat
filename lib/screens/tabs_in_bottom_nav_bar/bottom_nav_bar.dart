@@ -5,6 +5,7 @@ import 'package:news_app/cubits/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/favorites/favorites_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/more/more_screen.dart';
+import 'package:news_app/screens/tabs_in_bottom_nav_bar/notification/notification_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'category/category_screen.dart';
@@ -25,6 +26,7 @@ class BottomNavBarScreen extends StatelessWidget {
               const HomeScreen(),
               const FavoritesScreen(),
               CategoryScreen(),
+               NotificationScreen(),
               const MoreScreen(),
             ];
             return tabs[state];
@@ -52,6 +54,10 @@ class BottomNavBarScreen extends StatelessWidget {
                     GButton(
                       icon: Icons.category,
                       text: 'تصنيفات',
+                    ),
+                    GButton(
+                      icon: Icons.notifications,
+                      text: 'اشعارات',
                     ),
                     GButton(
                       icon: Icons.more_horiz,

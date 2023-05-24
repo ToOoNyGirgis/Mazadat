@@ -98,6 +98,15 @@ class _RegisterBodyState extends State<RegisterBody> {
                       height: 1.5.h,
                     ),
                     CustomTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'ادخل كلمة المرور';
+                        }
+                        if (value.length < 6) {
+                          return 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل';
+                        }
+                        return null;
+                      },
                       onChanged: (value) {
                         password = value;
                       },
@@ -108,7 +117,16 @@ class _RegisterBodyState extends State<RegisterBody> {
                     SizedBox(
                       height: 1.5.h,
                     ),
-                    const CustomTextField(
+                    CustomTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'ادخل تأكيد الرقم السري';
+                        }
+                        if (value != password) {
+                          return 'تأكيد الرقم السري غير مطابق للرقم السري';
+                        }
+                        return null;
+                      },
                       obscureText: true,
                       icon: Icons.check,
                       hint: 'تأكيد الرقم السري',

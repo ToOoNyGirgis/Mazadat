@@ -34,7 +34,7 @@ class _FilterScreenState extends State<FilterScreen> {
   void initState() {
     super.initState();
     selectedCityName = 'المدينة';
-    selectedCityId = null;
+    // selectedCityId = null;
     controller.addListener(() {
       if(controller.position.maxScrollExtent==controller.offset){
         fetchData();
@@ -118,6 +118,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         );
                         if (result != null) {
                           setState(() {
+                            print(result);
                             selectedCityName = result['name']!;
                             selectedCityId = result['id']!;
                             starIcon = Icons.star_border;
