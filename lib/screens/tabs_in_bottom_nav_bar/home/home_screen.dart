@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -31,14 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
     notificationServices.setupInteractMessage(context);
     notificationServices.firebaseInit(context);
     notificationServices.getDeviceToken().then((value) {
-      print('device token is $value');
+      if (kDebugMode) {
+        print('device token is $value');
+      }
     });
     CategoriesService().getCategories().then((data) {
       setState(() {
         categories = data;
       });
     }).catchError((error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 
@@ -99,7 +104,6 @@ class TabBarViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(category.id);
     final homeBodyCubit = HomeBodyCubit(ItemService());
     homeBodyCubit.getDataForEachTab(category.id);
     return BlocBuilder<HomeBodyCubit, HomeBodyState>(
@@ -110,7 +114,6 @@ class TabBarViewBody extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is HomeBodySuccess) {
-          print(state.items);
 
           if (state.items.isNotEmpty) {
             return Padding(
@@ -149,7 +152,7 @@ class TabBarViewBody extends StatelessWidget {
               ),
             );
           }
-          return const Center(child: Text('عذراً لا توجد بيانات'));
+          return  Center(child: Text('عذراً لا توجد بيانات',style: TextStyle(fontSize: 18.sp),));
         } else if (state is HomeBodyFailure) {
           return Center(
               child: Text(
@@ -157,9 +160,10 @@ class TabBarViewBody extends StatelessWidget {
             style: const TextStyle(fontSize: 22),
           ));
         } else if (state is HomeBodyNoInternet) {
-          return const Text('تأكد من وجود انترنت');
-        } else
-          return const Text('عذرا لا توجد بيانات');
+          return Center(child:  Text('تأكد من وجود انترنت',style: TextStyle(fontSize: 18.sp),));
+        } else {
+          return Center(child:  Text('عذرا لا توجد بيانات',style: TextStyle(fontSize: 18.sp),));
+        }
       },
     );
 

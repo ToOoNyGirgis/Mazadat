@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -9,7 +10,7 @@ import 'package:news_app/widgets/custom_text_field.dart';
 import 'package:sizer/sizer.dart';
 
 class RegisterBody extends StatefulWidget {
-  RegisterBody({super.key});
+  const RegisterBody({super.key});
 
   @override
   State<RegisterBody> createState() => _RegisterBodyState();
@@ -136,18 +137,40 @@ class _RegisterBodyState extends State<RegisterBody> {
                     ),
                     CustomButton(
                       text: 'تسجيل',
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          BlocProvider.of<AuthCubit>(context).registerUser(
-                            mobile: mobile!,
-                            name: name!,
-                            lastName: lastName!,
-                            password: password!,
-                          );
+                      onTap: () async {
+                        var result = await Connectivity().checkConnectivity();
+                        if (result != ConnectivityResult.none) {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
+                            BlocProvider.of<AuthCubit>(context).registerUser(
+                              mobile: mobile!,
+                              name: name!,
+                              lastName: lastName!,
+                              password: password!,
+                            );
+                          } else {
+                            autovalidateMode = AutovalidateMode.always;
+                            setState(() {});
+                          }
                         } else {
-                          autovalidateMode = AutovalidateMode.always;
-                          setState(() {});
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                    'عذرا لا يوجد انترنت, تأكد من اتصالك بالأنترنت'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Text('موافق'))
+                                ],
+                              );
+                            },
+                          );
                         }
                       },
                     ),

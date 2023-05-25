@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/categories_model.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/category/sub_categories_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -46,12 +45,12 @@ class CategoryItem extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 40,
-            top: -30,
+            right: 4.h,
+            top: -4.h,
             child: Image.network(
               categories.image,
-              height: 120,
-              width: 120,
+              height: 13.h,
+              width: 14.h,
             ),
           )
         ],

@@ -1,10 +1,8 @@
-import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:meta/meta.dart';
-import 'package:news_app/models/categories_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/models/items_model.dart';
 import 'package:news_app/services/get_item_service.dart';
-
+import 'package:flutter/material.dart';
 part 'home_body_state.dart';
 
 class HomeBodyCubit extends Cubit<HomeBodyState> {

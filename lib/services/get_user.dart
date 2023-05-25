@@ -15,15 +15,16 @@ class GetUserService {
 
   get_headers() async {
     return requestHeaders = {
-      'Content-type': 'application/json',
-      'token': "token"
+      // 'Content-type': 'application/json',
+      'token': "$kAccessTokenInPref"
     };
   }
 
-  Future<List<UserModel>> getUser(BuildContext context, String userId) async {
+  Future<List<UserModel>> getUser(BuildContext context) async {
     try {
-      http.Response response = await http.get(Uri.parse(_kApiUrl + userId),
+      http.Response response = await http.get(Uri.parse('https://mazadat.bluesoftec.net/api/users/getUser'),
           headers: await get_headers());
+
 
       if (response.statusCode != 200) {
         var data = jsonDecode(response.body);
@@ -32,7 +33,7 @@ class GetUserService {
       final items = json.decode(response.body)['data'] as List?;
       List<UserModel> list =
           items!.map((val) => UserModel.fromJson(val)).toList();
-
+      // print(list);
       return list;
     } on SocketException {
       throw Exception('No Internet connection 😑');
@@ -55,6 +56,7 @@ class GetUserService {
         // store token in sharedPreference
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString(kAccessTokenInPref, response['data']);
+        pref.setString(kAccessMethod, 'API');
         return true;
       } else {
         // show the response['message']

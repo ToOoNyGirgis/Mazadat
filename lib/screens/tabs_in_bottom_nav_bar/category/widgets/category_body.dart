@@ -20,7 +20,7 @@ class CategoryBody extends StatelessWidget {
             if (snapshot.hasData) {
               List<CategoriesModel> categories = snapshot.data!;
               return GridView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -29,7 +29,7 @@ class CategoryBody extends StatelessWidget {
                     mainAxisSpacing: 30,
                   ),
                   itemBuilder: (context, index) => Padding(
-                        padding: EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 20),
                         child: CategoryItem(
                           screenNameToNavigate: SubCategories.id,
                           categories: categories[index],

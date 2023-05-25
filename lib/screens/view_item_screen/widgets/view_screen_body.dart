@@ -9,7 +9,7 @@ class ViewScreenBody extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
       child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Align(

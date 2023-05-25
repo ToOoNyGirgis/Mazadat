@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:news_app/common/constant.dart';
 import 'package:news_app/screens/auth/auth_screen.dart';
 import 'package:news_app/screens/tabs_in_bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:news_app/screens/tabs_in_bottom_nav_bar/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IsLoggedIn extends StatefulWidget {
+  const IsLoggedIn({super.key});
+
   @override
-  _IsLoggedInState createState() => _IsLoggedInState();
+  IsLoggedInState createState() => IsLoggedInState();
 }
 
-class _IsLoggedInState extends State<IsLoggedIn> {
+class IsLoggedInState extends State<IsLoggedIn> {
   String? token;
   bool initial = true;
 
@@ -23,12 +24,12 @@ class _IsLoggedInState extends State<IsLoggedIn> {
           token = sharedPrefValue.getString(kAccessTokenInPref);
         });
       });
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     } else {
       if (token == null) {
-        return AuthScreen();
+        return const AuthScreen();
       } else {
-        return BottomNavBarScreen();
+        return const BottomNavBarScreen();
       }
     }
   }

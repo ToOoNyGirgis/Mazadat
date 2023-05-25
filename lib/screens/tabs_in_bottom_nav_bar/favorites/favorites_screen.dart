@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/common/constant.dart';
 import 'package:news_app/helper/sqldb.dart';
@@ -15,12 +16,15 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
+
+
   SqlDb mySql = SqlDb();
 
   Future<List<Map>> readData() async {
     List<Map> response = await mySql.readData('SELECT * FROM favorite');
     return response;
   }
+
 
   List<ItemsModel> items = [];
 
@@ -33,120 +37,58 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         child: FutureBuilder(
           future: readData(),
           builder: (context, AsyncSnapshot<List<Map>> snapshot) {
+
             if (snapshot.hasData) {
               List<Map<dynamic, dynamic>>? favoritesData = snapshot.data;
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: favoritesData!.length,
-                itemBuilder: (context, index) {
-                  print(favoritesData[index][kCityIdDB]);
-                  if (favoritesData[index][kCityIdDB]!=null) {
-                    return  Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'الفئة : ${favoritesData[index][kCategoryNameDB]}',
-                          style:
-                          const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        favoritesData[index][kCityNameDB] != 'المدينة'
-                            ? Text(
-                          'المدينة : ${favoritesData[index][kCityNameDB]}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold),
-                        )
-                            : const Text(
-                          'لم يتم اختيار مدينة',
-                          style:
-                          TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        // Text(favoritesData[index][kCategoryIdDB]),
-                        // Text(favoritesData[index][kCityIdDB]),
-                        FutureBuilder(
-                          future: ItemService().filter({
-                            'category_id': favoritesData[index]
-                            [kCategoryIdDB]
-                                .toString(),
-                            'city_id': favoritesData[index][kCityIdDB],
-                          }),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> filterSnapshot) {
-                            if (filterSnapshot.hasData) {
-                              List<ItemsModel> items = filterSnapshot.data!;
-                              return items.length != 0
-                                  ? ListView.builder(
-                                shrinkWrap: true,
-                                physics:
-                                const NeverScrollableScrollPhysics(),
-                                itemCount: items.length,
-                                itemBuilder: (context, filterIndex) {
-                                  return ItemsInFilter(
-                                      items: items[filterIndex]);
-                                },
-                              )
-                                  : Text('لا توجد بيانات');
-                            } else if (filterSnapshot.hasError) {
-                              return Text('حدث خطأ');
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                          },
-                        ),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                      ],
-                    );
-                  }
-                  else{
-                    return  Padding(
-                      padding: EdgeInsets.only(top: 1.h),
-                      child: Column(
+              if(favoritesData!.isNotEmpty) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: favoritesData.length,
+                  itemBuilder: (context, index){
+                    if (favoritesData[index][kCityIdDB] != null) {
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             'الفئة : ${favoritesData[index][kCategoryNameDB]}',
-                            style:
-                            const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           favoritesData[index][kCityNameDB] != 'المدينة'
                               ? Text(
-                            'المدينة : ${favoritesData[index][kCityNameDB]}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold),
-                          )
+                                  'المدينة : ${favoritesData[index][kCityNameDB]}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                )
                               : const Text(
-                            'لم يتم اختيار مدينة',
-                            style:
-                            TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                                  'لم يتم اختيار مدينة',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                           // Text(favoritesData[index][kCategoryIdDB]),
                           // Text(favoritesData[index][kCityIdDB]),
                           FutureBuilder(
                             future: ItemService().filter({
-                              'category_id': favoritesData[index]
-                              [kCategoryIdDB]
+                              'category_id': favoritesData[index][kCategoryIdDB]
                                   .toString(),
+                              'city_id': favoritesData[index][kCityIdDB],
                             }),
                             builder: (BuildContext context,
                                 AsyncSnapshot<dynamic> filterSnapshot) {
                               if (filterSnapshot.hasData) {
                                 List<ItemsModel> items = filterSnapshot.data!;
-                                return items.length != 0
+                                return items.isNotEmpty
                                     ? ListView.builder(
-                                  shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  itemCount: items.length,
-                                  itemBuilder: (context, filterIndex) {
-                                    return ItemsInFilter(
-                                        items: items[filterIndex]);
-                                  },
-                                )
-                                    : Text('لا توجد بيانات');
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: items.length,
+                                        itemBuilder: (context, filterIndex) {
+                                          return ItemsInFilter(
+                                              items: items[filterIndex]);
+                                        },
+                                      )
+                                    : const Text('لا توجد بيانات');
                               } else if (filterSnapshot.hasError) {
-                                return Text('حدث خطأ');
+                                return const Text('حدث خطأ');
                               } else {
                                 return const Center(
                                     child: CircularProgressIndicator());
@@ -157,11 +99,78 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             thickness: 2,
                           ),
                         ],
-                      ),
-                    );
-                  }
-                },
-              );
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 1.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'الفئة : ${favoritesData[index][kCategoryNameDB]}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            favoritesData[index][kCityNameDB] != 'المدينة'
+                                ? Text(
+                                    'المدينة : ${favoritesData[index][kCityNameDB]}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : const Text(
+                                    'لم يتم اختيار مدينة',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                            // Text(favoritesData[index][kCategoryIdDB]),
+                            // Text(favoritesData[index][kCityIdDB]),
+                            FutureBuilder(
+                              future: ItemService().filter({
+                                'category_id': favoritesData[index]
+                                        [kCategoryIdDB]
+                                    .toString(),
+                              }),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic> filterSnapshot) {
+                                if (filterSnapshot.hasData) {
+                                  List<ItemsModel> items = filterSnapshot.data!;
+                                  return items.isNotEmpty
+                                      ? ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: items.length,
+                                          itemBuilder: (context, filterIndex) {
+                                            return ItemsInFilter(
+                                                items: items[filterIndex]);
+                                          },
+                                        )
+                                      : const Text('لا توجد بيانات');
+                                } else if (filterSnapshot.hasError) {
+                                  return const Text('حدث خطأ');
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                            const Divider(
+                              thickness: 2,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                );
+              }
+              else{
+                return  Center(
+                  child: Text('لا توجد تفضيلات',style: TextStyle(
+                    fontSize: 18.sp
+                  ),),
+                );
+              }
             }
             return const Center(
               child: CircularProgressIndicator(),

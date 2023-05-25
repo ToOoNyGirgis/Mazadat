@@ -118,7 +118,6 @@ class _FilterScreenState extends State<FilterScreen> {
                         );
                         if (result != null) {
                           setState(() {
-                            print(result);
                             selectedCityName = result['name']!;
                             selectedCityId = result['id']!;
                             starIcon = Icons.star_border;
@@ -229,8 +228,8 @@ class _FilterScreenState extends State<FilterScreen> {
                     } else {
                       return Center(
                         child: hasMore
-                            ? CircularProgressIndicator()
-                            : Text('لا توجد بيانات اخري لعرضها'),
+                            ? const CircularProgressIndicator()
+                            : const Text('لا توجد بيانات اخري لعرضها'),
                       );
                     }
                   },

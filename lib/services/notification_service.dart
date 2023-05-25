@@ -35,8 +35,8 @@ class NotificationServices {
       AndroidNotification? android = message.notification!.android;
       int response = await sqlDb.insertData(
           'INSERT INTO "notification" ( $kNotificationBody, $kNotificationTitle) VALUES( "${notification!.body}", "${notification.title}")');
-
       if (kDebugMode) {
+        print('response is $response');
         print("notifications title:${notification.title}");
         print("notifications body:${notification.body}");
         print('count:${android!.count}');
@@ -108,7 +108,8 @@ class NotificationServices {
     NotificationDetails notificationDetails = NotificationDetails(
         android: androidNotificationDetails, iOS: darwinNotificationDetails);
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async {
+
       _flutterLocalNotificationsPlugin.show(
         0,
         message.notification!.title.toString(),
@@ -125,6 +126,7 @@ class NotificationServices {
 
   void isTokenRefresh() async {
     messaging.onTokenRefresh.listen((event) {
+
       event.toString();
       if (kDebugMode) {
         print('refresh');
@@ -133,6 +135,7 @@ class NotificationServices {
   }
 
   Future<void> setupInteractMessage(BuildContext context) async {
+
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
@@ -141,22 +144,21 @@ class NotificationServices {
     }
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
+
       handleMessage(context, event);
     });
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
+
     if (message.data['type'] == 'msj') {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => NotificationScreen(
-                    id: message.data['id'],
-                  )));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => NotificationScreen()));
     }
   }
 
   Future forgroundMessage() async {
+
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,

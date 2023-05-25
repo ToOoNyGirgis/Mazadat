@@ -1,11 +1,18 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:news_app/common/constant.dart';
 import 'package:news_app/services/get_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+  final GoogleSignIn googleSignIn =GoogleSignIn();
+  // final FacebookAuth facebookLogin= FacebookAuth();
+
 
   Future<void> registerUser(
       {required String mobile,
@@ -26,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(RegisterFailure(errMessage: 'لقد حدث خطأ'));
       }
     } on Exception catch (e) {
-      emit(RegisterFailure(errMessage: 'something went wrong'));
+      emit(RegisterFailure(errMessage: 'something went wrong: $e'));
     }
   }
 
@@ -44,7 +51,26 @@ class AuthCubit extends Cubit<AuthState> {
         emit(LoginFailure(errMessage: 'تأكد من رقم الهاتف او الرقم السري'));
       }
     } on Exception catch (e) {
-      emit(LoginFailure(errMessage: 'something went wrong'));
+      emit(LoginFailure(errMessage: 'something went wrong: $e'));
     }
+  }
+
+
+  Future<void> loginWithGoogle() async{
+    try {
+      emit(LoginLoading());
+      googleSignIn.signIn().then((value) async {
+        String? name = value!.id;
+        print('id is $name');
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString(kAccessTokenInPref, value.id);
+        pref.setString(kAccessMethod, "Google");
+        emit(LoginSuccess());
+      });
+
+    } on Exception catch (e) {
+  emit(LoginFailure(errMessage: 'something went wrong: $e'));
+  }
+
   }
 }

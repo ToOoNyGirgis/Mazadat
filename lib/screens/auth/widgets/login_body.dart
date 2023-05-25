@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -87,24 +88,72 @@ class _LoginBodyState extends State<LoginBody> {
                   ),
                   CustomButton(
                     text: 'تسجيل الدخول',
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                        BlocProvider.of<AuthCubit>(context).loginUser(
-                          mobile: mobile!,
-                          password: password!,
-                        );
+                    onTap: () async {
+                      var result = await Connectivity().checkConnectivity();
+                      if (result != ConnectivityResult.none) {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          BlocProvider.of<AuthCubit>(context).loginUser(
+                            mobile: mobile!,
+                            password: password!,
+                          );
+                        } else {
+                          autovalidateMode = AutovalidateMode.always;
+                          setState(() {});
+                        }
                       } else {
-                        autovalidateMode = AutovalidateMode.always;
-                        setState(() {});
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  'عذرا لا يوجد انترنت, تأكد من اتصالك بالأنترنت'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    child: const Text('موافق'))
+                              ],
+                            );
+                          },
+                        );
                       }
-                    }
-                    // Navigator.pushNamed(context, BottomNavBarScreen.id);
-                    ,
+                    },
                   ),
                   SizedBox(
                     height: 1.5.h,
                   ),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                          onPressed: ()async {
+                            // Future<UserCredential> signInWithFacebook() async {
+                            //   // Trigger the sign-in flow
+                            //   final LoginResult loginResult = await FacebookAuth.instance.login();
+                            //
+                            //   // Create a credential from the access token
+                            //   final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken.token);
+                            //
+                            //   // Once signed in, return the UserCredential
+                            //   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                            // }
+                          },
+                          icon: Image.asset('assets/images/facebook.png')),
+                      IconButton(
+                          onPressed: () {
+                           BlocProvider.of<AuthCubit>(context).loginWithGoogle();
+                          },
+                          icon: Image.asset(
+                              'assets/images/Google_ G _Logo.svg.png')),
+                    ],
+                  )
                 ],
               ),
             ),
