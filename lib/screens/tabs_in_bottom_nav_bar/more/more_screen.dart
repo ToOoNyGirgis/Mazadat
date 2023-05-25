@@ -40,7 +40,7 @@ class MoreScreen extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            user[0].name,
+                            "${user[0].name} ${user[0].lastName}",
                             style: TextStyle(
                               fontSize: 18.sp,
                             ),

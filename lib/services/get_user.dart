@@ -13,17 +13,21 @@ class GetUserService {
   late Map<String, String> requestHeaders;
   static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/users/';
 
-  get_headers() async {
+  get_headers(String token) async {
+
     return requestHeaders = {
-      // 'Content-type': 'application/json',
-      'token': "$kAccessTokenInPref"
+      'Content-type': 'application/json',
+      'token': token
     };
   }
 
   Future<List<UserModel>> getUser(BuildContext context) async {
     try {
+      SharedPreferences pref =await SharedPreferences.getInstance();
+      String? token= pref.getString(kAccessTokenInPref);
+      print(token);
       http.Response response = await http.get(Uri.parse('https://mazadat.bluesoftec.net/api/users/getUser'),
-          headers: await get_headers());
+          headers: await get_headers(token!));
 
 
       if (response.statusCode != 200) {
@@ -49,14 +53,14 @@ class GetUserService {
     try {
       final response = await api.post(
         url: '${_kApiUrl}login',
-        headers: await get_headers(),
+        headers: await get_headers('token'),
         body: json.encode(data),
       );
       if (response['status'] == true) {
         // store token in sharedPreference
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString(kAccessTokenInPref, response['data']);
-        pref.setString(kAccessMethod, 'API');
+        // pref.setString(kAccessMethod, 'API');
         return true;
       } else {
         // show the response['message']
@@ -75,7 +79,7 @@ class GetUserService {
     final api = Api();
     final response = await api.post(
       url: '${_kApiUrl}register',
-      headers: await get_headers(),
+      headers: await get_headers('token'),
       body: json.encode(data),
     );
     if (response['status'] == true) {
