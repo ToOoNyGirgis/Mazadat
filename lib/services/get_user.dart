@@ -14,14 +14,13 @@ class GetUserService {
   static const _kApiUrl = 'https://mazadat.bluesoftec.net/api/users/';
 
   get_headers(String token) async {
-
     return requestHeaders = {
       'Content-type': 'application/json',
       'token': token
     };
   }
 
-  Future<List<UserModel>> getUser(BuildContext context) async {
+  Future<Map<String,dynamic>> getUser() async {
     try {
       SharedPreferences pref =await SharedPreferences.getInstance();
       String? token= pref.getString(kAccessTokenInPref);
@@ -34,11 +33,9 @@ class GetUserService {
         var data = jsonDecode(response.body);
         throw Exception(data['error']['message']);
       }
-      final items = json.decode(response.body)['data'] as List?;
-      List<UserModel> list =
-          items!.map((val) => UserModel.fromJson(val)).toList();
-      // print(list);
-      return list;
+      final items = json.decode(response.body)['data'];
+      print(items['id']);
+      return items;
     } on SocketException {
       throw Exception('No Internet connection 😑');
     } on HttpException {
@@ -90,6 +87,23 @@ class GetUserService {
       return true;
     } else {
       // show the response['message']
+      return false;
+    }
+  }
+
+
+  Future<bool> updateData(data) async {
+    final api = Api();
+    SharedPreferences pref =await SharedPreferences.getInstance();
+    String? token= pref.getString(kAccessTokenInPref);
+    final response = await api.post(
+      url: '${_kApiUrl}update',
+      headers: await get_headers(token!),
+      body: json.encode(data),
+    );
+    if (response['status'] == true) {
+      return true;
+    } else {
       return false;
     }
   }
